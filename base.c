@@ -7,9 +7,14 @@
 
 int main(void) 
 {
-//    while (1) {
-	char input;
-	scanf("? %s", &input);
+    char input[100];
+
+    while (1) {
+	printf("? ");
+	fflush(stdout);
+	fgets(input, sizeof(input), stdin);
+
+	input[strcspn(input, "\n")] = '\0';
 	
 	pid_t child = fork();
 	
@@ -18,14 +23,13 @@ int main(void)
 	    exit(EXIT_FAILURE);
 	}
 
-	input[strchr(&input, '\n')] = '\0';
-
 	if (child == 0) {
-	    execlp(&input, &input, NULL);
-	    perror(&input);
-	    exit(1);
+	    execlp(input, input, NULL);
+	    perror(input);
+	    exit(EXIT_FAILURE);
 	}
-	wait(NULL);
 
-//    }
+	wait(NULL);
+	return 0;
+    }
 }
