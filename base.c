@@ -12,7 +12,8 @@ int main(void)
     while (1) {
 	printf("? ");
 	fflush(stdout);
-	fgets(input, sizeof(input), stdin);
+	if (fgets(input, sizeof(input), stdin) == NULL)
+	    break;
 
 	input[strcspn(input, "\n")] = '\0';
 	
@@ -30,6 +31,6 @@ int main(void)
 	}
 
 	wait(NULL);
-	return 0;
     }
+    return 0;
 }
