@@ -16,6 +16,10 @@ int main(void)
 	    break;
 
 	input[strcspn(input, "\n")] = '\0';
+
+	if (strcmp(input, "exit") == 0) {
+	    exit(0);
+	}
 	
 	pid_t child = fork();
 	
