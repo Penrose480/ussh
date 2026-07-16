@@ -5,9 +5,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#define MAX_INPUT_SIZE 100
+
 int main(void) 
 {
-    char input[100];
+    char input[MAX_INPUT_SIZE];
 
     while (1) {
         printf("? ");
@@ -17,7 +19,7 @@ int main(void)
 
         input[strcspn(input, "\n")] = '\0';
 
-        if (strcmp(input, "exit") == 0) {
+        if (strncmp(input, "exit", MAX_INPUT_SIZE) == 0) {
             exit(0);
         }
         
