@@ -7,36 +7,50 @@
 
 #define MAX_INPUT_SIZE 100
 
+char *ussh_read();
+
 int main(void) 
 {
-    char input[MAX_INPUT_SIZE];
 
-    while (1) {
-        printf("? ");
-        fflush(stdout);
-        if (fgets(input, sizeof(input), stdin) == NULL)
-            break;
+  while (1) {
+    pid_t child;
+    char *input;
 
-        input[strcspn(input, "\n")] = '\0';
-
-        if (strncmp(input, "exit", MAX_INPUT_SIZE) == 0) {
-            exit(0);
-        }
-        
-        pid_t child = fork();
-        
-        if (child == -1) {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-
-        if (child == 0) {
-            execlp(input, input, NULL);
-            perror(input);
-            exit(EXIT_FAILURE);
-        }
-
-        wait(NULL);
+    input = ussh_read();
+    if (strncmp(input, "exit", MAX_INPUT_SIZE) == 0) {
+      exit(0);
     }
-    return 0;
+
+    child = fork();
+    
+    if (child == -1) {
+      perror("fork");
+      exit(EXIT_FAILURE);
+    }
+
+    if (child == 0) {
+      execlp(input, input, NULL);
+      perror(input);
+      exit(EXIT_FAILURE);
+    }
+
+    free(input);
+
+    wait(NULL);
+  }
+  return 0;
+}
+
+char *ussh_read()
+{
+  char *input;
+  input = malloc(MAX_INPUT_SIZE * sizeof(char));
+  
+  printf("? ");
+  fflush(stdout);
+  if (fgets(input, sizeof(input), stdin) == NULL)
+    exit(-1);
+
+  input[strcspn(input, "\n")] = '\0';
+  return input;
 }
