@@ -6,7 +6,7 @@
 
 #define MAX_INPUT_SIZE 100
 
-char *ussh_read(void);
+char *ussh_read();
 
 int main(void) 
 {
@@ -38,7 +38,7 @@ int main(void)
   return 0;
 }
 
-char *ussh_read(void)
+char *ussh_read()
 {
   char *input;
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
