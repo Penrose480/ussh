@@ -45,8 +45,10 @@ char *ussh_read(void)
   
   printf("? ");
   fflush(stdout);
-  if (fgets(input, sizeof(input), stdin) == NULL)
+  if (fgets(input, sizeof(input), stdin) == NULL) {
+    perror("fgets");
     exit(-1);
+  }
 
   input[strcspn(input, "\n")] = '\0';
   return input;
