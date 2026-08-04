@@ -7,6 +7,7 @@
 #define MAX_INPUT_SIZE 100
 
 char *ussh_read(void);
+char *ussh_parse(char* text);
 
 int main(void) 
 {
@@ -38,6 +39,13 @@ int main(void)
   return 0;
 }
 
+char *ussh_parse(char *text)
+{
+  text[strcspn(text, "\n")] = '\0';
+  
+  return text;
+}
+
 char *ussh_read(void)
 {
   char *input;
@@ -45,11 +53,11 @@ char *ussh_read(void)
   
   printf("? ");
   fflush(stdout);
+  
   if (fgets(input, sizeof(input), stdin) == NULL) {
     perror("fgets");
     exit(-1);
-  }
+  } 
 
-  input[strcspn(input, "\n")] = '\0';
-  return input;
+  return ussh_parse(input);
 }
