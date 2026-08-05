@@ -42,7 +42,6 @@ int main(void)
 char *ussh_parse(char *text)
 {
   text[strcspn(text, "\n")] = '\0';
-  
   return text;
 }
 
@@ -58,6 +57,5 @@ char *ussh_read(void)
     perror("fgets");
     exit(-1);
   } 
-
   return ussh_parse(input);
 }
