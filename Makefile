@@ -1,7 +1,7 @@
 all:
-	$(CC) base.c -o base -Wall -Wextra -pedantic
+	$(CC) ussh.c -o ussh -Wall -Wextra -pedantic
 
 clean:
 	rm -f *.o
 install:
-	cp base /usr/local/bin
+	cp ussh /usr/local/bin
