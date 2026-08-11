@@ -3,6 +3,6 @@ all:
 
 clean:
 	rm -f *.o
-install:
+install: all
 	rm -f /usr/local/bin/ussh 
 	cp ussh /usr/local/bin
