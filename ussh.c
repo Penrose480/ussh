@@ -63,8 +63,6 @@ char **ussh_parse(char *text)
   }
   arr[i] = NULL;
 
-  free(text);
-
   return arr;
 }
 
