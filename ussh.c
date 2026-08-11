@@ -63,6 +63,8 @@ char **ussh_parse(char *text)
   }
   arr[i] = NULL;
 
+  free(text);
+
   return arr;
 }
 
@@ -71,9 +73,9 @@ char **ussh_read(void)
   char *input;
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
 
-  printf("? ");
   fflush(stdout);
-  
+  printf("? ");
+
   if (fgets(input, sizeof(input), stdin) == NULL) {
     perror("fgets");
     exit(-1);
