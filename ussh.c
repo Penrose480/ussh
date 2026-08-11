@@ -18,10 +18,10 @@ int main(void)
     char **args;
 
     args = ussh_read();
-    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {
-      exit(0);
-    }
 
+    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0)  
+      exit(0);
+  
     child = fork();
     if (child == -1) {
       perror("fork");
@@ -29,6 +29,7 @@ int main(void)
     }
     if (child == 0) {
       if (execvp(args[0], args) == -1) {
+        perror(args[0]);
         exit(-1);
       }
     }
@@ -44,6 +45,10 @@ char **ussh_parse(char *text)
 {
   size_t i;
   char **arr = malloc(sizeof(char *) * MAX_TOKENS);
+  if (arr == NULL) {
+    fprintf(stderr, "Malloc err");
+    exit(-1);
+  }
   char *token;
 
   text[strcspn(text, "\n")] = '\0';
@@ -71,6 +76,11 @@ char **ussh_read(void)
   char *input;
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
 
+  if (input == NULL) {
+    fprintf(stderr, "Malloc err");
+    exit(-1);
+  }
+
   fflush(stdout);
   printf("? ");
 
@@ -78,5 +88,6 @@ char **ussh_read(void)
     perror("fgets");
     exit(-1);
   } 
+
   return ussh_parse(input);
 }
