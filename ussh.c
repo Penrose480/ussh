@@ -55,8 +55,6 @@ char **ussh_parse(char *text)
   }
   char *token;
 
-  text[strcspn(text, "\n")] = '\0';
-
   token = strtok(text, DELIMIT);
   i = 0;
   while (token != NULL) {
