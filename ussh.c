@@ -5,19 +5,21 @@
 #include <unistd.h>
 
 #define MAX_TOKENS 60
-#define DELIMIT " "
+#define DELIMIT " \t\r\n\a" 
 #define MAX_INPUT_SIZE 100
 
-char **ussh_read(void);
+char *ussh_read(void);
 char **ussh_parse(char* text);
 
 int main(void) 
 {
   while (1) {
     pid_t child;
+    char *input;
     char **args;
 
-    args = ussh_read();
+    input = ussh_read();
+    args = ussh_parse(input);
 
     if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0)  
       exit(0);
@@ -34,9 +36,11 @@ int main(void)
       }
     }
 
-    free(args);
 
-    wait(NULL);
+   wait(NULL);
+
+   free(args);
+   free(input);
   }
   return 0;
 }
@@ -71,7 +75,7 @@ char **ussh_parse(char *text)
   return arr;
 }
 
-char **ussh_read(void)
+char *ussh_read(void)
 {
   char *input;
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
@@ -89,5 +93,5 @@ char **ussh_read(void)
     exit(-1);
   } 
 
-  return ussh_parse(input);
+  return input;
 }
