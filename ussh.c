@@ -37,10 +37,11 @@ int main(void)
     }
 
 
+  free(args);
+  free(input);
+
    wait(NULL);
 
-   free(args);
-   free(input);
   }
   return 0;
 }
@@ -86,7 +87,7 @@ char *ussh_read(void)
   fflush(stdout);
   printf("? ");
 
-  if (fgets(input, sizeof(input), stdin) == NULL) {
+  if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
     perror("fgets");
     exit(-1);
   } 
