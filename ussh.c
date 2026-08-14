@@ -29,7 +29,9 @@ int main(void)
         } else if (chdir(args[1]) == -1) {
           fprintf(stderr, "Invalid directory\n");
         }
-    } else { 
+    } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
+      printf("ussh v0.01\n Enter a command.\n");
+    } else {
       child = fork();
       if (child == -1) {
         perror("fork");
