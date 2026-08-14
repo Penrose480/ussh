@@ -21,26 +21,32 @@ int main(void)
     input = ussh_read();
     args = ussh_parse(input);
 
-    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0)  
+    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
       exit(0);
-  
-    child = fork();
-    if (child == -1) {
-      perror("fork");
-      exit(-1);
-    }
-    if (child == 0) {
-      if (execvp(args[0], args) == -1) {
-        perror(args[0]);
+    } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
+        if (args[1] == NULL) {
+          fprintf(stderr, "Expected cd /path/to\n");
+        } else if (chdir(args[1]) == -1) {
+          fprintf(stderr, "Invalid directory\n");
+        }
+    } else { 
+      child = fork();
+      if (child == -1) {
+        perror("fork");
         exit(-1);
+      }
+      if (child == 0) {
+        if (execvp(args[0], args) == -1) {
+          perror(args[0]);
+          exit(-1);
+        }
       }
     }
 
+    free(args);
+    free(input);
 
-  free(args);
-  free(input);
-
-   wait(NULL);
+    wait(NULL);
 
   }
   return 0;
