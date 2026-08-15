@@ -19,6 +19,10 @@ int main(void)
     char **args;
 
     input = ussh_read();
+    if (input == NULL) {
+      free(input);
+      continue;
+    }
     args = ussh_parse(input);
 
     if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
@@ -100,5 +104,6 @@ char *ussh_read(void)
     exit(-1);
   } 
 
-  return input;
+  if (*input != '\n') return input;
+  else return NULL; 
 }
