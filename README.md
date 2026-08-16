@@ -12,5 +12,10 @@ clone directory
 
 make
 ```bash
-    make
+    sudo make clean install
+```
+
+run
+```bash
+    ussh
 ```
