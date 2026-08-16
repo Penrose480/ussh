@@ -4,5 +4,5 @@ all:
 clean:
 	rm -f *.o
 install: all
-	rm -f /usr/local/bin/ussh 
-	cp ussh /usr/local/bin
+	rm -f /bin/ussh 
+	cp ussh /bin
