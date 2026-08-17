@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,6 +11,7 @@
 
 char *ussh_read(void);
 char **ussh_parse(char* text);
+void signal_handler(void);
 
 int main(void) 
 {
@@ -29,22 +31,24 @@ int main(void)
       exit(0);
     } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
         if (args[1] == NULL) {
-          fprintf(stderr, "Expected cd /path/to\n");
+          fprintf(stderr, "Expected cd path/to\n");
         } else if (chdir(args[1]) == -1) {
           fprintf(stderr, "Invalid directory\n");
         }
     } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
         printf("ussh v0.01\n Enter a command.\n");
     } else {
-      child = fork();
-      if (child == -1) {
-        perror("fork");
-        exit(-1);
-      }
-      if (child == 0) {
-        if (execvp(args[0], args) == -1) {
-          perror(args[0]);
+        signal(SIGINT, signal_handler);
+        
+        child = fork();
+        if (child == -1) {
+          perror("fork");
           exit(-1);
+        }
+        if (child == 0) {
+          if (execvp(args[0], args) == -1) {
+            perror(args[0]);
+            exit(-1);
         }
       }
     }
@@ -106,4 +110,8 @@ char *ussh_read(void)
 
   if (*input != '\n') return input;
   else return NULL; 
+}
+
+void signal_handler(void) {
+  exit(0);
 }
