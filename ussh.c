@@ -11,11 +11,16 @@
 
 char *ussh_read(void);
 char **ussh_parse(char* text);
-void signal_handler(int sig);
+void do_nothing(int sig);
 void ussh_execute(char **args);
 
 int main(void) 
 {
+  signal(SIGINT, do_nothing);
+  signal(SIGQUIT, do_nothing);
+  signal(SIGSTOP, do_nothing);
+  signal(SIGTERM, do_nothing);
+
   while (1) {
     char *input;
     char **args;
@@ -104,12 +109,10 @@ void ussh_execute(char **args) {
   pid_t child;
 
   child = fork();
-  signal(SIGINT, signal_handler);
   if (child == -1) {
     perror("fork");
     exit(-1);
-  }
-  if (child == 0) {
+  } else if (child == 0) {
     if (execvp(args[0], args) == -1) {
       perror(args[0]);
       exit(-1);
@@ -117,6 +120,6 @@ void ussh_execute(char **args) {
   }
 }
 
-void signal_handler(int sig) {
+void do_nothing(int sig) {
   ;
 }
