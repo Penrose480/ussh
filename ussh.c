@@ -11,12 +11,12 @@
 
 char *ussh_read(void);
 char **ussh_parse(char* text);
-void signal_handler(void);
+void signal_handler(int sig);
+void ussh_execute(char **args);
 
 int main(void) 
 {
   while (1) {
-    pid_t child;
     char *input;
     char **args;
 
@@ -38,19 +38,7 @@ int main(void)
     } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
         printf("ussh v0.01\n Enter a command.\n");
     } else {
-        signal(SIGINT, signal_handler);
-        
-        child = fork();
-        if (child == -1) {
-          perror("fork");
-          exit(-1);
-        }
-        if (child == 0) {
-          if (execvp(args[0], args) == -1) {
-            perror(args[0]);
-            exit(-1);
-        }
-      }
+      ussh_execute(args);
     }
 
     free(args);
@@ -112,6 +100,23 @@ char *ussh_read(void)
   else return NULL; 
 }
 
-void signal_handler(void) {
-  exit(0);
+void ussh_execute(char **args) {
+  pid_t child;
+
+  child = fork();
+  signal(SIGINT, signal_handler);
+  if (child == -1) {
+    perror("fork");
+    exit(-1);
+  }
+  if (child == 0) {
+    if (execvp(args[0], args) == -1) {
+      perror(args[0]);
+      exit(-1);
+    }
+  }
+}
+
+void signal_handler(int sig) {
+  ;
 }
