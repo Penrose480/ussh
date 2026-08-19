@@ -1,3 +1,4 @@
 #.gitignore
 ussh
 *.o
+ussh_test.c

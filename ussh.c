@@ -16,23 +16,32 @@ void ussh_execute(char **args);
 
 int main(void) 
 {
+  char **args;
+  char *input = NULL;
+  char input2[MAX_INPUT_SIZE];
+  char **prev_args = NULL;
+  size_t i;
+
   signal(SIGINT, do_nothing);
   signal(SIGQUIT, do_nothing);
   signal(SIGSTOP, do_nothing);
   signal(SIGTERM, do_nothing);
 
   while (1) {
-    char *input;
-    char **args;
-
     input = ussh_read();
     if (input == NULL) {
       free(input);
       continue;
     }
+    for (i = 0; i < strlen(input); i++) {
+      input2[i] = input[i];
+    }
     args = ussh_parse(input);
 
     if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
+      if (prev_args != NULL) free(prev_args);
+      free(args);
+      free(input);
       exit(0);
     } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
         if (args[1] == NULL) {
@@ -42,16 +51,23 @@ int main(void)
         }
     } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
         printf("ussh v0.01\n Enter a command.\n");
+    } else if (strncmp(args[0], "!!", MAX_INPUT_SIZE) == 0 && prev_args != NULL) {
+        printf("%s\n", prev_args[0]);
+        ussh_execute(prev_args);
     } else {
-      ussh_execute(args);
+        ussh_execute(args);
     }
+
+    prev_args = ussh_parse(input2);
 
     free(args);
     free(input);
 
     wait(NULL);
-
   }
+
+  free(prev_args);
+
   return 0;
 }
 
