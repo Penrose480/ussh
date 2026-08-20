@@ -23,6 +23,7 @@ int main(void)
   signal(SIGQUIT, do_nothing);
   signal(SIGSTOP, do_nothing);
   signal(SIGTERM, do_nothing);
+  signal(SIGSEGV, do_nothing);
 
   while (1) {
     input = ussh_read();
