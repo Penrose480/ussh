@@ -124,5 +124,5 @@ void ussh_execute(char **args) {
 }
 
 void do_nothing(int sig) {
-  ;
+  sig = sig;
 }
