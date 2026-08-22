@@ -39,7 +39,7 @@ int main(void)
       exit(0);
     } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
         if (args[1] == NULL) {
-          fprintf(stderr, "Expected cd path/to\n");
+          chdir("/home");
         } else if (chdir(args[1]) == -1) {
           fprintf(stderr, "Invalid directory\n");
         }
