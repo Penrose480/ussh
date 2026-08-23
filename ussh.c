@@ -8,6 +8,7 @@
 #define MAX_TOKENS 60
 #define DELIMIT " \t\r\n\a" 
 #define MAX_INPUT_SIZE 100
+#define EXIT_USSH 5 
 
 char *ussh_read(void);
 char **ussh_parse(char* text);
@@ -33,9 +34,8 @@ int main(void)
     }
 
     args = ussh_parse(input);
-    if (ussh_execute(args) == -1)
+    if (ussh_execute(args) == EXIT_USSH)
       exit(0);
-
     free(input);
 
     wait(NULL);
@@ -99,7 +99,7 @@ int ussh_execute(char **args) {
 
     if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
       free(args);
-      return -1;
+      return EXIT_USSH;
     } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
         chdir("/home");
