@@ -12,7 +12,7 @@
 char *ussh_read(void);
 char **ussh_parse(char* text);
 void do_nothing(int sig);
-void ussh_execute(char **args);
+int ussh_execute(char **args);
 
 int main(void) 
 {
@@ -31,25 +31,11 @@ int main(void)
       free(input);
       continue;
     }
+
     args = ussh_parse(input);
-
-    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
-      free(args);
-      free(input);
+    if (ussh_execute(args) == -1)
       exit(0);
-    } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
-        if (args[1] == NULL) {
-          chdir("/home");
-        } else if (chdir(args[1]) == -1) {
-          fprintf(stderr, "Invalid directory\n");
-        }
-    } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
-        printf("ussh v0.01\n Enter a command.\n");
-    } else {
-        ussh_execute(args);
-    }
 
-    free(args);
     free(input);
 
     wait(NULL);
@@ -108,19 +94,35 @@ char *ussh_read(void)
   else return NULL; 
 }
 
-void ussh_execute(char **args) {
+int ussh_execute(char **args) {
   pid_t child;
 
-  child = fork();
-  if (child == -1) {
-    perror("fork");
-    exit(-1);
-  } else if (child == 0) {
-    if (execvp(args[0], args) == -1) {
-      perror(args[0]);
-      exit(-1);
+    if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
+      free(args);
+      return -1;
+    } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
+      if (args[1] == NULL) {
+        chdir("/home");
+      } else if (chdir(args[1]) == -1) {
+        fprintf(stderr, "Invalid directory\n");
+      }
+    } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
+      printf("ussh v0.01\n Enter a command.\n");
+    } else {
+      child = fork();
+      if (child == -1) {
+        perror("fork");
+        exit(-1);
+      } else if (child == 0) {
+        if (execvp(args[0], args) == -1) {
+          perror(args[0]);
+          exit(-1);
+        }
     }
+    free(args);
   }
+
+  return 0;
 }
 
 void do_nothing(int sig) {
