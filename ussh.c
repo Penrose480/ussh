@@ -9,6 +9,7 @@
 #define DELIMIT " \t\r\n\a" 
 #define MAX_INPUT_SIZE 100
 #define EXIT_USSH 5 
+#define NO_INPUT NULL
 
 char *ussh_read(void);
 char **ussh_parse(char* text);
@@ -28,7 +29,7 @@ int main(void)
 
   while (1) {
     input = ussh_read();
-    if (input == NULL) {
+    if (input == NO_INPUT) {
       free(input);
       continue;
     }
@@ -91,12 +92,11 @@ char *ussh_read(void)
   } 
 
   if (*input != '\n') return input;
-  else return NULL; 
+  else return NO_INPUT; 
 }
 
 int ussh_execute(char **args) {
   pid_t child;
-  static char* lastarg = NULL;
 
   if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
     free(args);
@@ -121,7 +121,6 @@ int ussh_execute(char **args) {
       }
     }
 
-    lastarg = args[0];
     free(args);
   }
 
