@@ -11,9 +11,10 @@
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
-char *ussh_read(void);
-char **ussh_parse(char* text);
 void do_nothing(int sig);
+char *ussh_read(void);
+void ussh_catch_signal(void);
+char **ussh_parse(char* text);
 int ussh_execute(char **args);
 
 int main(void) 
@@ -21,11 +22,7 @@ int main(void)
   char **args;
   char *input;
 
-  signal(SIGINT, do_nothing);
-  signal(SIGQUIT, do_nothing);
-  signal(SIGSTOP, do_nothing);
-  signal(SIGTERM, do_nothing);
-  signal(SIGSEGV, do_nothing);
+  ussh_catch_signal();
 
   while (1) {
     input = ussh_read();
@@ -104,11 +101,11 @@ int ussh_execute(char **args) {
     free(args);
     return EXIT_USSH;
   } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
-    if (args[1] == NULL) {
-      chdir("/home");
-    } else if (chdir(args[1]) == -1) {
-      fprintf(stderr, "Invalid directory\n");
-    }
+      if (args[1] == NULL) {
+        chdir("/home");
+      } else if (chdir(args[1]) == -1) {
+        fprintf(stderr, "Invalid directory\n");
+      }
   } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
       printf("ussh v0.01\n Enter a command.\n");
   } else {
@@ -131,4 +128,12 @@ int ussh_execute(char **args) {
 
 void do_nothing(int sig) {
   sig = sig;
+}
+
+void ussh_catch_signal(void) {
+  signal(SIGINT, do_nothing);
+  signal(SIGQUIT, do_nothing);
+  signal(SIGSTOP, do_nothing);
+  signal(SIGTERM, do_nothing);
+  signal(SIGSEGV, do_nothing);
 }
