@@ -136,4 +136,6 @@ void ussh_catch_signal(void) {
   signal(SIGSTOP, do_nothing);
   signal(SIGTERM, do_nothing);
   signal(SIGSEGV, do_nothing);
+  signal(SIGSYS, do_nothing);
+  signal(SIGKILL, do_nothing);
 }
