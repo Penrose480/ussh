@@ -49,7 +49,7 @@ char **ussh_parse(char *text)
   size_t i;
   char **arr = malloc(sizeof(char *) * MAX_TOKENS);
   if (arr == NULL) {
-    fprintf(stderr, "Malloc err");
+    perror("malloc");
     exit(-1);
   }
   char *token;
@@ -78,7 +78,7 @@ char *ussh_read(void)
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
 
   if (input == NULL) {
-    fprintf(stderr, "Malloc err");
+    perror("malloc");
     exit(-1);
   }
 
@@ -104,7 +104,7 @@ int ussh_execute(char **args) {
       if (args[1] == NULL) {
         chdir("/home");
       } else if (chdir(args[1]) == -1) {
-        fprintf(stderr, "Invalid directory\n");
+        perror("cd");
       }
   } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
       printf("ussh v0.01\n Enter a command.\n");
