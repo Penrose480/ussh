@@ -12,6 +12,7 @@
 #define NO_INPUT NULL
 
 void do_nothing(int sig);
+void die(char *msg);
 char *ussh_read(void);
 void ussh_catch_signal(void);
 char **ussh_parse(char* text);
@@ -49,8 +50,7 @@ char **ussh_parse(char *text)
   size_t i;
   char **arr = malloc(sizeof(char *) * MAX_TOKENS);
   if (arr == NULL) {
-    perror("malloc");
-    exit(-1);
+    die("malloc");
   }
   char *token;
 
@@ -61,7 +61,7 @@ char **ussh_parse(char *text)
     i++;
 
     if (i > MAX_TOKENS) {
-      fprintf(stderr, "Too large input\n");
+      die("Too large input");
       exit(-1);
     }
     
@@ -78,16 +78,14 @@ char *ussh_read(void)
   input = malloc(MAX_INPUT_SIZE * sizeof(char));
 
   if (input == NULL) {
-    perror("malloc");
-    exit(-1);
+    die("malloc");
   }
 
   fflush(stdout);
   printf("? ");
 
   if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
-    perror("fgets");
-    exit(-1);
+    die("fgets");
   } 
 
   if (*input != '\n') return input;
@@ -128,6 +126,11 @@ int ussh_execute(char **args) {
 
 void do_nothing(int sig) {
   sig = sig;
+}
+
+void die(char *msg) {
+  perror(msg);
+  exit(-1);
 }
 
 void ussh_catch_signal(void) {
