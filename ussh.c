@@ -109,8 +109,7 @@ int ussh_execute(char **args) {
   } else {
     child = fork();
     if (child == -1) {
-      perror("fork");
-      exit(-1);
+      die("fork");
     } else if (child == 0) {
       if (execvp(args[0], args) == -1) {
         perror(args[0]);
