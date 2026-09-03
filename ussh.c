@@ -5,9 +5,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define MAX_TOKENS 60
+#define MAX_TOKENS 100
 #define DELIMIT " \t\r\n\a" 
-#define MAX_INPUT_SIZE 100
+#define MAX_INPUT_SIZE 10000
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
@@ -61,8 +61,7 @@ char **ussh_parse(char *text)
     i++;
 
     if (i > MAX_TOKENS) {
-      die("Too large input");
-      exit(-1);
+      arr = realloc(arr, sizeof(arr) * 2);
     }
     
     token = strtok(NULL, DELIMIT);
