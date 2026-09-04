@@ -1,4 +1,5 @@
 #include <signal.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -111,8 +112,7 @@ int ussh_execute(char **args) {
       die("fork");
     } else if (child == 0) {
       if (execvp(args[0], args) == -1) {
-        perror(args[0]);
-        exit(-1);
+        die(args[0]);
       }
     }
 
