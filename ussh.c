@@ -12,7 +12,6 @@
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
-void do_nothing(int sig);
 void die(char *msg);
 char *ussh_read(void);
 void ussh_catch_signal(void);
@@ -122,22 +121,18 @@ int ussh_execute(char **args) {
   return 0;
 }
 
-void do_nothing(int sig) {
-  sig = sig;
-}
-
 void die(char *msg) {
   perror(msg);
   exit(-1);
 }
 
 void ussh_catch_signal(void) {
-  signal(SIGINT, do_nothing);
-  signal(SIGQUIT, do_nothing);
-  signal(SIGSTOP, do_nothing);
-  signal(SIGTERM, do_nothing);
-  signal(SIGSEGV, do_nothing);
-  signal(SIGSYS, do_nothing);
-  signal(SIGKILL, do_nothing);
-  signal(SIGABRT, do_nothing);
+  signal(SIGINT, SIG_IGN);
+  signal(SIGQUIT, SIG_IGN);
+  signal(SIGSTOP, SIG_IGN);
+  signal(SIGTERM, SIG_IGN);
+  signal(SIGSEGV, SIG_IGN);
+  signal(SIGSYS, SIG_IGN);
+  signal(SIGHUP, SIG_IGN);
+  signal(SIGABRT, SIG_IGN);
 }
