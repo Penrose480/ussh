@@ -129,7 +129,6 @@ void die(char *msg) {
 void ussh_catch_signal(void) {
   signal(SIGINT, SIG_IGN);
   signal(SIGQUIT, SIG_IGN);
-  signal(SIGSTOP, SIG_IGN);
   signal(SIGTERM, SIG_IGN);
   signal(SIGSEGV, SIG_IGN);
   signal(SIGSYS, SIG_IGN);
