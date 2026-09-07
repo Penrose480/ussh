@@ -84,6 +84,7 @@ char *ussh_read(void)
   printf("? ");
 
   if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
+    free(input);
     die("fgets");
   } 
 
