@@ -62,6 +62,9 @@ char **ussh_parse(char *text)
 
     if (i > MAX_TOKENS) {
       arr = realloc(arr, sizeof(arr) * 2);
+      if (arr == NULL) {
+        die("malloc");
+      }
     }
     
     token = strtok(NULL, DELIMIT);
