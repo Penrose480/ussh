@@ -76,8 +76,10 @@ char **ussh_parse(char *text)
 
 char *ussh_read(void)
 {
+  char c;
   char *input;
-  input = malloc(MAX_INPUT_SIZE * sizeof(char));
+  size_t i = 0;
+  input = calloc(MAX_INPUT_SIZE, sizeof(char));
 
   if (input == NULL) {
     die("malloc");
@@ -86,12 +88,19 @@ char *ussh_read(void)
   fflush(stdout);
   printf("? ");
 
-  if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
-    free(input);
-    die("fgets");
-  } 
+  while ((c = getchar()) != EOF && c != '\n') {
+    if (i <= MAX_INPUT_SIZE) {
+      input = realloc(input, sizeof(input) * 2);
+      if (input == NULL) {
+        die("malloc");
+      }
 
-  if (*input != '\n') return input;
+      input[i] = c;
+      i++;
+    }
+  }
+
+  if (input[0] != 0) return input;
   else return NO_INPUT; 
 }
 
