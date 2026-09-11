@@ -8,7 +8,7 @@
 
 #define MAX_TOKENS 100
 #define DELIMIT " \t\r\n\a" 
-#define MAX_INPUT_SIZE 10000
+#define MAX_INPUT_SIZE 1000
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
@@ -48,6 +48,7 @@ int main(void)
 char **ussh_parse(char *text)
 {
   size_t i;
+  size_t tokens;
   char **arr = malloc(sizeof(char *) * MAX_TOKENS);
   if (arr == NULL) {
     die("malloc");
@@ -55,16 +56,15 @@ char **ussh_parse(char *text)
   char *token;
 
   token = strtok(text, DELIMIT);
+  tokens = MAX_TOKENS;
   i = 0;
   while (token != NULL) {
     arr[i] = token;
     i++;
 
-    if (i > MAX_TOKENS) {
-      arr = realloc(arr, sizeof(arr) * 2);
-      if (arr == NULL) {
-        die("malloc");
-      }
+    if (i >= tokens) {
+      tokens *= 2;
+      arr = realloc(arr, tokens * sizeof(char * )); 
     }
     
     token = strtok(NULL, DELIMIT);
@@ -78,6 +78,7 @@ char *ussh_read(void)
 {
   char c;
   char *input;
+  size_t sz;
   size_t i = 0;
   input = calloc(MAX_INPUT_SIZE, sizeof(char));
 
@@ -88,16 +89,15 @@ char *ussh_read(void)
   fflush(stdout);
   printf("? ");
 
+  sz = MAX_INPUT_SIZE;
   while ((c = getchar()) != EOF && c != '\n') {
-    if (i <= MAX_INPUT_SIZE) {
-      input = realloc(input, sizeof(input) * 2);
-      if (input == NULL) {
-        die("malloc");
-      }
-
-      input[i] = c;
-      i++;
+    if (i >= sz) {
+      sz *= 2;
+      input = realloc(input, sizeof(char) * sz);
     }
+
+    input[i] = c;
+    i++;
   }
 
   if (input[0] != 0) return input;
