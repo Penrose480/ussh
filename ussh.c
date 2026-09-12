@@ -1,14 +1,13 @@
 #include <signal.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define MAX_TOKENS 100
+#define BASE_TOKENS 10
 #define DELIMIT " \t\r\n\a" 
-#define MAX_INPUT_SIZE 1000
+#define BASE_INPUT_SIZE 100
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
@@ -49,14 +48,14 @@ char **ussh_parse(char *text)
 {
   size_t i;
   size_t tokens;
-  char **arr = malloc(sizeof(char *) * MAX_TOKENS);
+  char **arr = malloc(sizeof(char *) * BASE_TOKENS);
   if (arr == NULL) {
     die("malloc");
   }
   char *token;
 
   token = strtok(text, DELIMIT);
-  tokens = MAX_TOKENS;
+  tokens = BASE_TOKENS;
   i = 0;
   while (token != NULL) {
     arr[i] = token;
@@ -80,7 +79,7 @@ char *ussh_read(void)
   char *input;
   size_t sz;
   size_t i = 0;
-  input = calloc(MAX_INPUT_SIZE, sizeof(char));
+  input = calloc(BASE_INPUT_SIZE, sizeof(char));
 
   if (input == NULL) {
     die("malloc");
@@ -89,7 +88,7 @@ char *ussh_read(void)
   fflush(stdout);
   printf("? ");
 
-  sz = MAX_INPUT_SIZE;
+  sz = BASE_INPUT_SIZE;
   while ((c = getchar()) != EOF && c != '\n') {
     if (i >= sz) {
       sz *= 2;
@@ -107,16 +106,16 @@ char *ussh_read(void)
 int ussh_execute(char **args) {
   pid_t child;
 
-  if (strncmp(args[0], "exit", MAX_INPUT_SIZE) == 0) {  
+  if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {  
     free(args);
     return EXIT_USSH;
-  } else if (strncmp(args[0], "cd", MAX_INPUT_SIZE) == 0) {
+  } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
         chdir("/home");
       } else if (chdir(args[1]) == -1) {
         perror("cd");
       }
-  } else if (strncmp(args[0], "help", MAX_INPUT_SIZE) == 0) {
+  } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
       printf("ussh v0.01\n Enter a command.\n");
   } else {
     child = fork();
