@@ -5,11 +5,15 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/** Definitions **/
+
 #define BASE_TOKENS 10
 #define DELIMIT " \t\r\n\a" 
 #define BASE_INPUT_SIZE 100
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
+
+/** Prototypes **/
 
 void die(char *msg);
 char *ussh_read(void);
@@ -24,7 +28,8 @@ int main(void)
 
   ussh_catch_signal();
 
-  while (1) {
+  /* Main loop */
+  for (;;) {
     input = ussh_read();
     if (input == NO_INPUT) {
       free(input);
@@ -44,35 +49,7 @@ int main(void)
   return 0;
 }
 
-char **ussh_parse(char *text)
-{
-  size_t i;
-  size_t tokens;
-  char **arr = malloc(sizeof(char *) * BASE_TOKENS);
-  if (arr == NULL) {
-    die("malloc");
-  }
-  char *token;
-
-  token = strtok(text, DELIMIT);
-  tokens = BASE_TOKENS;
-  i = 0;
-  while (token != NULL) {
-    arr[i] = token;
-    i++;
-
-    if (i >= tokens) {
-      tokens *= 2;
-      arr = realloc(arr, tokens * sizeof(char * )); 
-    }
-    
-    token = strtok(NULL, DELIMIT);
-  }
-  arr[i] = NULL;
-
-  return arr;
-}
-
+/** Input **/
 char *ussh_read(void)
 {
   char c;
@@ -103,6 +80,38 @@ char *ussh_read(void)
   else return NO_INPUT; 
 }
 
+/** Parsing **/
+char **ussh_parse(char *text)
+{
+  size_t i;
+  size_t tokens;
+  char *token;
+  char **arr = malloc(sizeof(char *) * BASE_TOKENS);
+  if (arr == NULL) {
+    die("malloc");
+  }
+
+  token = strtok(text, DELIMIT);
+  tokens = BASE_TOKENS;
+  i = 0;
+  while (token != NULL) {
+    arr[i] = token;
+    i++;
+
+    if (i >= tokens) {
+      tokens *= 2;
+      arr = realloc(arr, tokens * sizeof(char * )); 
+    }
+    
+    token = strtok(NULL, DELIMIT);
+  }
+  arr[i] = NULL;
+
+  return arr;
+}
+
+
+/** Execute **/
 int ussh_execute(char **args) {
   pid_t child;
 
@@ -133,11 +142,13 @@ int ussh_execute(char **args) {
   return 0;
 }
 
+/** Error handling **/
 void die(char *msg) {
   perror(msg);
   exit(-1);
 }
 
+/** Signal handling **/
 void ussh_catch_signal(void) {
   signal(SIGINT, SIG_IGN);
   signal(SIGQUIT, SIG_IGN);
