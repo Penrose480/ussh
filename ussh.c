@@ -39,7 +39,7 @@ int main(void)
     args = ussh_parse(input);
     if (ussh_execute(args) == EXIT_USSH) {
       free(input);
-      exit(0);
+      break;
     }
     free(input);
 
@@ -116,8 +116,12 @@ int ussh_execute(char **args) {
   pid_t child;
 
   if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {  
-    free(args);
-    return EXIT_USSH;
+    if (args[1] != NULL) {
+      printf("Usage: exit\n");
+    } else {
+      free(args);
+      return EXIT_USSH;
+    }
   } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
         chdir("/home");
@@ -125,7 +129,11 @@ int ussh_execute(char **args) {
         perror("cd");
       }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
-      printf("ussh v0.01\n Enter a command.\n");
+    if (args[1] != NULL) {
+      printf("Usage: help\n");
+    } else {       
+      printf ("ussh v0.01\n Enter a command.\n");
+    }
   } else {
     child = fork();
     if (child == -1) {
@@ -148,7 +156,7 @@ void die(char *msg) {
   exit(-1);
 }
 
-/** Signal handling **/
+/** Signal handling - ignore all signals **/
 void ussh_catch_signal(void) {
   signal(SIGINT, SIG_IGN);
   signal(SIGQUIT, SIG_IGN);
