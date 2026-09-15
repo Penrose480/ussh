@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/** Definitions **/
+/*** Definitions ***/
 
 #define BASE_TOKENS 10
 #define DELIMIT " \t\r\n\a" 
@@ -13,7 +13,7 @@
 #define EXIT_USSH 5 
 #define NO_INPUT NULL
 
-/** Prototypes **/
+/*** Prototypes ***/
 
 void die(char *msg);
 char *ussh_read(void);
