@@ -66,9 +66,11 @@ char *ussh_read(void)
   printf("? ");
 
   sz = BASE_INPUT_SIZE;
+
+  /* Increase buffer size if fully used */
   while ((c = getchar()) != EOF && c != '\n') {
     if (i >= sz) {
-      sz *= 2;
+      sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
     }
 
@@ -80,7 +82,7 @@ char *ussh_read(void)
   else return NO_INPUT; 
 }
 
-/** Parsing **/
+/** Parse **/
 char **ussh_parse(char *text)
 {
   size_t i;
@@ -91,6 +93,7 @@ char **ussh_parse(char *text)
     die("malloc");
   }
 
+  /* Parse through text */
   token = strtok(text, DELIMIT);
   tokens = BASE_TOKENS;
   i = 0;
@@ -99,7 +102,7 @@ char **ussh_parse(char *text)
     i++;
 
     if (i >= tokens) {
-      tokens *= 2;
+      tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char * )); 
     }
     
@@ -115,6 +118,7 @@ char **ussh_parse(char *text)
 int ussh_execute(char **args) {
   pid_t child;
 
+  /* Execute diff builtin based on input */
   if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {  
     if (args[1] != NULL) {
       printf("Usage: exit\n");
@@ -134,6 +138,7 @@ int ussh_execute(char **args) {
     } else {       
       printf ("ussh v0.01\n Enter a command.\n");
     }
+  /* If not builtin - execute normally */
   } else {
     child = fork();
     if (child == -1) {
