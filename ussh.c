@@ -16,6 +16,7 @@
 /*** Prototypes ***/
 
 void die(char *msg);
+void do_nothing(int sig);
 char *ussh_read(void);
 void ussh_catch_signal(void);
 char **ussh_parse(char* text);
@@ -161,13 +162,18 @@ void die(char *msg) {
   exit(-1);
 }
 
+/** Dummy function **/
+void do_nothing(int sig) {
+  sig = sig;
+}
+
 /** Signal handling - ignore all signals **/
 void ussh_catch_signal(void) {
-  signal(SIGINT, SIG_IGN);
-  signal(SIGQUIT, SIG_IGN);
-  signal(SIGTERM, SIG_IGN);
-  signal(SIGSEGV, SIG_IGN);
-  signal(SIGSYS, SIG_IGN);
-  signal(SIGHUP, SIG_IGN);
-  signal(SIGABRT, SIG_IGN);
+  signal(SIGINT, do_nothing);
+  signal(SIGQUIT, do_nothing);
+  signal(SIGTERM, do_nothing);
+  signal(SIGSEGV, do_nothing);
+  signal(SIGSYS, do_nothing);
+  signal(SIGHUP, do_nothing);
+  signal(SIGABRT, do_nothing);
 }
