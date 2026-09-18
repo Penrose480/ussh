@@ -73,6 +73,9 @@ char *ussh_read(void)
     if (i >= sz) {
       sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
+      if (input == NULL) {
+        die("malloc");
+      }
     }
 
     input[i] = c;
