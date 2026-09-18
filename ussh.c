@@ -108,6 +108,9 @@ char **ussh_parse(char *text)
     if (i >= tokens) {
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char * )); 
+      if (arr == NULL) {
+        die("malloc");
+      }
     }
     
     token = strtok(NULL, DELIMIT);
