@@ -56,7 +56,7 @@ char *ussh_read(void)
   char c;
   char *input;
   size_t sz;
-  size_t i = 0;
+  size_t i;
   input = calloc(BASE_INPUT_SIZE, sizeof(char));
 
   if (input == NULL) {
@@ -67,6 +67,7 @@ char *ussh_read(void)
   printf("? ");
 
   sz = BASE_INPUT_SIZE;
+  i = 0;
 
   /* Increase buffer size if fully used */
   while ((c = getchar()) != EOF && c != '\n') {
@@ -122,7 +123,8 @@ char **ussh_parse(char *text)
 
 
 /** Execute **/
-int ussh_execute(char **args) {
+int ussh_execute(char **args) 
+{
   pid_t child;
 
   /* Execute diff builtin based on input */
@@ -163,18 +165,21 @@ int ussh_execute(char **args) {
 }
 
 /** Error handling **/
-void die(char *msg) {
+void die(char *msg) 
+{
   perror(msg);
   exit(-1);
 }
 
 /** Dummy function **/
-void do_nothing(int sig) {
+void do_nothing(int sig) 
+{
   sig = sig;
 }
 
 /** Signal handling - ignore all signals **/
-void ussh_catch_signal(void) {
+void ussh_catch_signal(void) 
+{
   signal(SIGINT, do_nothing);
   signal(SIGQUIT, do_nothing);
   signal(SIGTERM, do_nothing);
