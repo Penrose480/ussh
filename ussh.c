@@ -75,7 +75,7 @@ char *ussh_read(void)
       sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
       if (input == NULL) {
-        die("malloc");
+        die("realloc");
       }
     }
 
@@ -110,7 +110,7 @@ char **ussh_parse(char *text)
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char * )); 
       if (arr == NULL) {
-        die("malloc");
+        die("realloc");
       }
     }
     
