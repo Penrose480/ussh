@@ -60,7 +60,7 @@ char *ussh_read(void)
   input = calloc(BASE_INPUT_SIZE, sizeof(char));
 
   if (input == NULL) {
-    die("malloc");
+    die("calloc");
   }
 
   fflush(stdout);
