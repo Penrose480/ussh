@@ -145,7 +145,7 @@ int ussh_execute(char **args)
     if (args[1] != NULL) {
       printf("Usage: help\n");
     } else {       
-      printf ("ussh v0.01\n Enter a command.\n");
+      printf("ussh v0.01\nEnter a command.\n");
     }
   /* If not builtin - execute normally */
   } else {
@@ -187,4 +187,5 @@ void ussh_catch_signal(void)
   signal(SIGSYS, do_nothing);
   signal(SIGHUP, do_nothing);
   signal(SIGABRT, do_nothing);
+  signal(SIGILL, do_nothing);
 }
