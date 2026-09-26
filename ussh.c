@@ -139,7 +139,7 @@ int ussh_execute(char **args)
       if (args[1] == NULL) {
         chdir("/home");
       } else if (chdir(args[1]) == -1) {
-        perror("cd");
+        die("cd");
       }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
     if (args[1] != NULL) {
