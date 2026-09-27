@@ -110,6 +110,7 @@ char **ussh_parse(char *text)
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char *)); 
       if (arr == NULL) {
+        free(text);
         die("realloc");
       }
     }
