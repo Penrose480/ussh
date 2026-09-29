@@ -189,4 +189,5 @@ void ussh_catch_signal(void)
   signal(SIGHUP, do_nothing);
   signal(SIGABRT, do_nothing);
   signal(SIGILL, do_nothing);
+  signal(SIGBUS, do_nothing);
 }
