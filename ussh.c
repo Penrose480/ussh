@@ -95,6 +95,7 @@ char **ussh_parse(char *text)
   char *token;
   char **arr = malloc(sizeof(char *) * BASE_TOKENS);
   if (arr == NULL) {
+    free(text);
     die("malloc");
   }
 
