@@ -69,8 +69,8 @@ char *ussh_read(void)
   sz = BASE_INPUT_SIZE;
   i = 0;
 
-  /* Increase buffer size if fully used */
   while ((c = getchar()) != EOF && c != '\n') {
+    /* Increase buffer size if fully used */
     if (i >= sz) {
       sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
@@ -153,7 +153,7 @@ int ussh_execute(char **args)
   } else {
     child = fork();
     if (child == -1) {
-      die("fork");
+      perror("fork");
     } else if (child == 0) {
       if (execvp(args[0], args) == -1) {
         die(args[0]);
