@@ -19,3 +19,7 @@ run
 ```bash
     ussh
 ```
+
+## ABOUT
+
+Supports basic builtins, such as cd and exit, command line arguments, and signal handling.
