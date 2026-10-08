@@ -113,9 +113,7 @@ char **ussh_parse(char *text)
       if (arr == NULL) {
         free(text);
         die("realloc");
-      }
-    }
-    
+      } }
     token = strtok(NULL, DELIMIT);
   }
   arr[i] = NULL;
