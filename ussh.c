@@ -71,7 +71,7 @@ char *ussh_read(void)
 
   while ((c = getchar()) != EOF && c != '\n') {
     /* Increase buffer size if fully used */
-    if (i >= sz) {
+    if (i > sz) {
       sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
       if (input == NULL) {
@@ -107,7 +107,7 @@ char **ussh_parse(char *text)
     arr[i] = token;
     i++;
 
-    if (i >= tokens) {
+    if (i > tokens) {
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char *)); 
       if (arr == NULL) {
@@ -129,12 +129,8 @@ int ussh_execute(char **args)
 
   /* Execute diff builtin based on input */
   if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {  
-    if (args[1] != NULL) {
-      printf("Usage: exit\n");
-    } else {
       free(args);
       return EXIT_USSH;
-    }
   } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
         chdir("/home");
@@ -142,11 +138,7 @@ int ussh_execute(char **args)
         perror("cd");
       }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
-    if (args[1] != NULL) {
-      printf("Usage: help\n");
-    } else {       
       printf("ussh v0.01\nEnter a command.\n");
-    }
   /* If not builtin - execute normally */
   } else {
     child = fork();
