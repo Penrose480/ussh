@@ -87,7 +87,7 @@ char *ussh_read(void)
 
   if (input[0] != 0) return input;
   /* If Control D */
-  else if (i == 0) return "exit"; 
+  else if (c == EOF) return "exit"; 
   else return NO_INPUT; 
 }
 
