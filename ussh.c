@@ -73,7 +73,7 @@ char *ussh_read(void)
 
   while ((c = getchar()) != EOF && c != '\n') {
     /* Increase buffer size if fully used */
-    if (i > sz) {
+    if (i >= sz) {
       sz += BASE_INPUT_SIZE;
       input = realloc(input, sizeof(char) * sz);
       if (input == NULL) {
@@ -111,7 +111,7 @@ char **ussh_parse(char *text)
     arr[i] = token;
     i++;
 
-    if (i > tokens) {
+    if (i >= tokens) {
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char *)); 
       if (arr == NULL) {
