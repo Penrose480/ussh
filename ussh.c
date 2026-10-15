@@ -57,8 +57,8 @@ char *ussh_read(void)
 {
   char c;
   char *input;
-  size_t sz;
-  size_t i;
+  int sz;
+  int i;
   input = calloc(BASE_INPUT_SIZE, sizeof(char));
 
   if (input == NULL) {
@@ -94,8 +94,8 @@ char *ussh_read(void)
 /** Parse **/
 char **ussh_parse(char *text)
 {
-  size_t i;
-  size_t tokens;
+  int i;
+  int tokens;
   char *token;
   char **arr = malloc(sizeof(char *) * BASE_TOKENS);
   if (arr == NULL) {
