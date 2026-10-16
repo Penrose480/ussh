@@ -36,6 +36,7 @@ int main(void)
       free(input);
       continue;
     } else if (strcmp(input, "exit") == 0) {
+      putchar('\n');
       break;
     }
 
