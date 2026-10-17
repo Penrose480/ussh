@@ -113,6 +113,7 @@ char **ussh_parse(char *text)
     i++;
 
     if (i >= tokens) {
+      /* Increase buffer size if fully used */
       tokens += BASE_TOKENS;
       arr = realloc(arr, tokens * sizeof(char *)); 
       if (arr == NULL) {
