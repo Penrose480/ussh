@@ -36,7 +36,6 @@ int main(void)
       free(input);
       continue;
     } else if (strcmp(input, "exit") == 0) {
-      putchar('\n');
       break;
     }
 
@@ -86,10 +85,17 @@ char *ussh_read(void)
     i++;
   }
 
-  if (input[0] != 0) return input;
+  if (input[0] != 0) {
+    return input;
+  }
   /* If Control D */
-  else if (c == EOF) return "exit"; 
-  else return NO_INPUT; 
+  else if (c == EOF) {
+    putchar('\n');
+    return "exit"; 
+  }
+  else {
+    return NO_INPUT; 
+  }
 }
 
 /** Parse **/
