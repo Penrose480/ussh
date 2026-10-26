@@ -140,15 +140,12 @@ int ussh_execute(char **args)
   pid_t child;
 
   /* Execute diff builtin based on input */
-  if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {  
-      free(args);
-      return EXIT_USSH;
-  } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
-      if (args[1] == NULL) {
-        chdir("/home");
-      } else if (chdir(args[1]) == -1) {
-        perror("cd");
-      }
+  if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
+    if (args[1] == NULL) {
+      chdir("/home");
+    } else if (chdir(args[1]) == -1) {
+      perror("cd");
+    }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
       printf("ussh v0.01\nEnter a command.\n");
   /* If not builtin - execute normally */
