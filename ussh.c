@@ -88,7 +88,7 @@ char *ussh_read(void)
   if (input[0] != 0) {
     return input;
   }
-  /* If Control D */
+  /* If Control D or if exit */
   else if (c == EOF) {
     putchar('\n');
     return "exit"; 
