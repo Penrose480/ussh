@@ -35,6 +35,7 @@ int main(void)
     if (input == NO_INPUT) {
       free(input);
       continue;
+    /* If Control D or exit command */
     } else if (strcmp(input, "exit") == 0) {
       break;
     }
@@ -88,7 +89,7 @@ char *ussh_read(void)
   if (input[0] != 0) {
     return input;
   }
-  /* If Control D or if exit */
+  /* If Control D */
   else if (c == EOF) {
     putchar('\n');
     return "exit"; 
@@ -141,11 +142,11 @@ int ussh_execute(char **args)
 
   /* Execute diff builtin based on input */
   if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
-    if (args[1] == NULL) {
-      chdir("/home");
-    } else if (chdir(args[1]) == -1) {
-      perror("cd");
-    }
+      if (args[1] == NULL) {
+        chdir("/home");
+      } else if (chdir(args[1]) == -1) {
+        perror("cd");
+      }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
       printf("ussh v0.01\nEnter a command.\n");
   /* If not builtin - execute normally */
