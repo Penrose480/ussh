@@ -148,7 +148,7 @@ int ussh_execute(char **args)
         perror("cd");
       }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
-      printf("ussh v0.01\nEnter a command.\n");
+      printf("ussh v0.02\nEnter a command.\n");
   /* If not builtin - execute normally */
   } else {
     child = fork();
