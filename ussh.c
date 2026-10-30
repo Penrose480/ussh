@@ -37,6 +37,7 @@ int main(void)
       continue;
     /* If Control D or exit command */
     } else if (strcmp(input, "exit") == 0) {
+      free(input);
       break;
     }
 
