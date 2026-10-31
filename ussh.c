@@ -91,13 +91,11 @@ char *ussh_read(void)
 
   if (input[0] != 0) {
     return input;
-  }
   /* If Control D */
-  else if (c == EOF) {
+  } else if (c == EOF) { 
     putchar('\n');
     return "exit"; 
-  }
-  else {
+  } else {
     return NO_INPUT; 
   }
 }
