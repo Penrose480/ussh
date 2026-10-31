@@ -44,9 +44,11 @@ int main(void)
     args = ussh_parse(input);
     if (ussh_execute(args) == EXIT_USSH) {
       free(input);
+      free(args);
       break;
     }
     free(input);
+    free(args);
 
     wait(NULL);
   }
@@ -161,7 +163,6 @@ int ussh_execute(char **args)
       }
     }
 
-    free(args);
   }
 
   return 0;
