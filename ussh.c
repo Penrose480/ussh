@@ -56,6 +56,8 @@ int main(void)
   return 0;
 }
 
+/*** Functions ***/
+
 /** Input **/
 char *ussh_read(void)
 {
