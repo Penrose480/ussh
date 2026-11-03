@@ -35,7 +35,7 @@ int main(void)
     if (input == NO_INPUT) {
       free(input);
       continue;
-    /* If Control D or exit command */
+    /* If Control D */
     } else if (strcmp(input, "exit") == 0) {
       free(input);
       break;
@@ -144,7 +144,9 @@ int ussh_execute(char **args)
   pid_t child;
 
   /* Execute diff builtin based on input */
-  if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
+  if (strncmp(args[0], "exit", BASE_INPUT_SIZE)) {
+    return EXIT_USSH;
+  } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
         chdir("/home");
       } else if (chdir(args[1]) == -1) {
