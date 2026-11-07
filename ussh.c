@@ -144,7 +144,7 @@ int ussh_execute(char **args)
   pid_t child;
 
   /* Execute diff builtin based on input */
-  if (strncmp(args[0], "exit", BASE_INPUT_SIZE)) {
+  if (strncmp(args[0], "exit", BASE_INPUT_SIZE) == 0) {
     return EXIT_USSH;
   } else if (strncmp(args[0], "cd", BASE_INPUT_SIZE) == 0) {
       if (args[1] == NULL) {
