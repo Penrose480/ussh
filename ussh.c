@@ -35,9 +35,6 @@ int main(void)
     if (input == NO_INPUT) {
       free(input);
       continue;
-    /* If Control D */
-    } else if (strcmp(input, "exit") == 0) {
-      break;
     }
 
     args = ussh_parse(input);
@@ -94,9 +91,9 @@ char *ussh_read(void)
     return input;
   /* If Control D */
   } else if (c == EOF) { 
-    putchar('\n');
     free(input);
-    return "exit"; 
+    putchar('\n');
+    exit(0);
   } else {
     return NO_INPUT; 
   }
