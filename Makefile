@@ -1,3 +1,5 @@
+# See LICENSE file for copyright details
+
 all:
 	$(CC) ussh.c -o ussh -Wall -Wextra -pedantic
 
