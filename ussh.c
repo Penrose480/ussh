@@ -149,7 +149,7 @@ int ussh_execute(char **args)
       if (args[1] == NULL) {
         chdir("/home");
       } else if (chdir(args[1]) == -1) {
-        die("cd");
+        perror("cd");
       }
   } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
       printf("ussh v0.02\nEnter a command.\n");
