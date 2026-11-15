@@ -152,7 +152,7 @@ int ussh_execute(char **args)
       } else if (chdir(args[1]) == -1) {
         perror("cd");
       }
-  } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0) {
+  } else if (strncmp(args[0], "help", BASE_INPUT_SIZE) == 0 && args[1] == NULL) {
       printf("ussh v0.02\nEnter a command.\n");
   /* If not builtin - execute normally */
   } else {
