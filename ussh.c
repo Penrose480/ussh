@@ -197,6 +197,7 @@ void ussh_catch_signal(void)
   signal(SIGILL, do_nothing);
   signal(SIGPROF, do_nothing);
   signal(SIGTTIN, do_nothing);
+  signal(SIGTTOU, do_nothing);
   signal(SIGBUS, do_nothing);
   signal(SIGXCPU, do_nothing);
   signal(SIGXFSZ, do_nothing);
