@@ -203,6 +203,7 @@ void ussh_catch_signal(void)
   signal(SIGTTOU, do_nothing);
   signal(SIGTRAP, do_nothing);
   signal(SIGBUS, do_nothing);
+  signal(SIGKILL, do_nothing);
   signal(SIGXCPU, do_nothing);
   signal(SIGXFSZ, do_nothing);
   signal(SIGVTALRM, do_nothing);
