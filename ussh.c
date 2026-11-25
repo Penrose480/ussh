@@ -77,6 +77,7 @@ char *ussh_read(void)
   i = 0;
 
   while ((c = getchar()) != EOF && c != '\n') {
+
     /* Increase buffer size if fully used */
     if (i >= sz) {
       sz += BASE_INPUT_SIZE;
