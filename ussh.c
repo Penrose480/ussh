@@ -12,7 +12,7 @@
 #define BASE_TOKENS 10
 #define DELIMIT " \t\r\n\a" 
 #define BASE_INPUT_SIZE 100
-#define EXIT_USSH 5 
+#define EXIT_USSH -1 
 #define NO_INPUT NULL
 
 /*** Prototypes ***/
